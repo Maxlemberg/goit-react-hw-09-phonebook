@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { register } from '../redux/auth/auth.operations';
 import styles from './Inputs.module.css';
@@ -24,7 +24,7 @@ export default function RegisterPage() {
   //   password: '',
   // };
 
-  const handleChange = ({ target: { name, value } }) => {
+  const handleChange = useCallback(({ target: { name, value } }) => {
     if (name === 'name') {
       setName(value);
       return;
@@ -34,22 +34,25 @@ export default function RegisterPage() {
       return;
     }
     setPassword(value);
-  };
+  }, []);
 
-  const handlSubmit = evt => {
-    evt.preventDefault();
-    dispatch(register({ name, email, password }));
-    setName('');
-    setPassword('');
-    setEmail('');
-  };
+  const handlSubmit = useCallback(
+    evt => {
+      evt.preventDefault();
+      dispatch(register({ name, email, password }));
+      setName('');
+      setPassword('');
+      setEmail('');
+    },
+    [dispatch, email, name, password],
+  );
   // const { email, password, name } = this.state;
   return (
     <div>
       <h1 className={styles.title}>Сторінка реєстрації</h1>
       <form className={styles.form} onSubmit={handlSubmit} autoComplete="off">
         <label className={styles.label}>
-          Імя
+          {/* Імя */}
           <input
             placeholder="Name"
             className={styles.input}
@@ -60,7 +63,7 @@ export default function RegisterPage() {
           />
         </label>
         <label className={styles.label}>
-          Email
+          {/* <span className={styles.sp}>Email</span> */}
           <input
             placeholder="Email"
             className={styles.input}
@@ -71,7 +74,7 @@ export default function RegisterPage() {
           />
         </label>
         <label className={styles.label}>
-          Пароль
+          {/* Пароль */}
           <input
             placeholder="Password"
             className={styles.input}

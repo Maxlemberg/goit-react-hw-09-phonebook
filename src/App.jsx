@@ -1,5 +1,5 @@
 import React, { Suspense, lazy, useEffect } from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 // import HomePage from './Pages/HomePage';
 // import LoginPage from './Pages/LoginPage';
 // import RegisterPage from './Pages/RegisterPage';
@@ -19,6 +19,7 @@ const LoginPage = lazy(() => import('./Pages/LoginPage'));
 
 export default function App() {
   const dispatch = useDispatch();
+
   useEffect(() => {
     dispatch(getCurrentUser());
   }, [dispatch]);
@@ -60,6 +61,7 @@ export default function App() {
             component={Phonebook}
             redirectTo="/login"
           />
+          <Redirect to="/" />
         </Switch>
       </Suspense>
     </>

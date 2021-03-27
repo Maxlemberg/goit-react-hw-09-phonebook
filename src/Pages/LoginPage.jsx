@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { logIn } from '../redux/auth/auth.operations';
 import styles from './Inputs.module.css';
@@ -18,13 +18,13 @@ export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleEmail = e => {
+  const handleEmail = useCallback(e => {
     setEmail(e.target.value);
-  };
+  }, []);
 
-  const handlePassword = e => {
+  const handlePassword = useCallback(e => {
     setPassword(e.target.value);
-  };
+  }, []);
   // const handleChange = e => {
   //   // this.setState({ [name]: value });
   //   if (e.target.name === 'email') {
@@ -34,17 +34,20 @@ export default function LoginPage() {
   //   setPassword(e.target.value);
   // };
 
-  const handlSubmit = evt => {
-    evt.preventDefault();
-    dispatch(logIn({ email: email, password: password }));
-    setEmail('');
-    setPassword('');
-    // this.props.onLogin(this.state);
-    // this.setState({
-    //   email: '',
-    //   password: '',
-    // });
-  };
+  const handlSubmit = useCallback(
+    evt => {
+      evt.preventDefault();
+      dispatch(logIn({ email: email, password: password }));
+      setEmail('');
+      setPassword('');
+      // this.props.onLogin(this.state);
+      // this.setState({
+      //   email: '',
+      //   password: '',
+      // });
+    },
+    [dispatch, email, password],
+  );
 
   // const { email, password } = this.state;
   return (
@@ -53,9 +56,9 @@ export default function LoginPage() {
       <form className={styles.form} onSubmit={handlSubmit} autoComplete="off">
         <label className={styles.label}>
           {/* Eлектронна скринька📧 */}
-          📯
+
           <input
-            placeholder="Email"
+            placeholder="📯 Email"
             className={styles.input}
             type="email"
             name="email"
@@ -65,9 +68,9 @@ export default function LoginPage() {
         </label>
         <label className={styles.label}>
           {/* Пароль */}
-          🗝️
+
           <input
-            placeholder="Password"
+            placeholder="🗝️ Password"
             className={styles.input}
             type="password"
             name="password"

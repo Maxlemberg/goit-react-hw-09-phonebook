@@ -1,10 +1,23 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styles from './ContactsList.module.css';
 import { deleteContact } from '../../redux/contacts.operations';
 import { getVisibleContacts } from '../../redux/contacts-selectors';
 
-const ContactList = ({ onDelete, visibleContacts }) => {
+// const mapStateToProps = state => ({
+//   visibleContacts: getVisibleContacts(state),
+// });
+
+// const mapDispatchToProps = dispatch => ({
+//   onDelete: e => dispatch(deleteContact(e.target.id)),
+// });
+
+// export default connect(mapStateToProps, mapDispatchToProps)(ContactList);
+
+export default function ContactList() {
+  const dispatch = useDispatch();
+  const onDelete = e => dispatch(deleteContact(e.target.id));
+  const visibleContacts = useSelector(getVisibleContacts);
   const itemLi = visibleContacts.map(({ id, name, number }) => {
     return (
       <li key={id} className={styles.itemLi}>
@@ -23,14 +36,4 @@ const ContactList = ({ onDelete, visibleContacts }) => {
     );
   });
   return <ul className={styles.list}>{itemLi}</ul>;
-};
-
-const mapStateToProps = state => ({
-  visibleContacts: getVisibleContacts(state),
-});
-
-const mapDispatchToProps = dispatch => ({
-  onDelete: e => dispatch(deleteContact(e.target.id)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(ContactList);
+}

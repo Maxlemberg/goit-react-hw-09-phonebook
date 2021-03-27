@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import FormFn from '../Input';
 import Filter from '../Filter';
 import ContactList from '../ContactList';
@@ -45,30 +45,29 @@ export default function Phonebook() {
   const state = useSelector(getContacts);
   const isLoading = useSelector(getLoading);
 
-  const handleName = e => {
+  const handleName = useCallback(e => {
     setName(e.target.value);
-  };
+  }, []);
 
-  const handleNumber = e => {
+  const handleNumber = useCallback(e => {
     setNumber(e.target.value);
-  };
+  }, []);
 
-  const handleSubmit = event => {
-    event.preventDefault();
-    const uniqCheck = state.some(item => item.name === name);
-    if (uniqCheck) {
-      alert(`Імя ${name} вже існує!`);
-      return;
-    }
-    // this.props.onSubmit(this.state.name, this.state.number);
-    dispatch(addContacts(name, number));
-    resetInput();
-  };
-
-  const resetInput = () => {
-    setName('');
-    setNumber('');
-  };
+  const handleSubmit = useCallback(
+    event => {
+      event.preventDefault();
+      const uniqCheck = state.some(item => item.name === name);
+      if (uniqCheck) {
+        alert(`Імя ${name} вже існує!`);
+        return;
+      }
+      // this.props.onSubmit(this.state.name, this.state.number);
+      dispatch(addContacts(name, number));
+      setName('');
+      setNumber('');
+    },
+    [dispatch, name, number, state],
+  );
 
   // const handInput = e => {
   //   const { name, value } = e.currentTarget;
